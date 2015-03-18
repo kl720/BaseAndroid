@@ -1,0 +1,15 @@
+<resources>
+    
+	<string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_header_hint_loading">正在加载……</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    
+    <string name="net_error">当前网络不可用!</string>
+    <string name="data_null">返回数据为空</string>
+    <string name="LoadContent"><strong>数据加载中……</strong></string>
+    
+    
+</resources>
