@@ -1,6 +1,8 @@
 package com.yulian.framework;
 
 import java.util.HashMap;
+
+import android.widget.RelativeLayout.LayoutParams;
 /**
  * 常量类
  * @author Administrator
@@ -26,7 +28,8 @@ public class Constant {
     public final static int DAIHECHA=2;
     public final static int HECHAZHONG=3;
     public final static int HECHAWANC=4;
-
+    
+    public final static LayoutParams HVS_LPARAMS=new LayoutParams(200,80);//HVScrollListView参数
 
     //字典转换器,统一配置在此处
     //工单状态
