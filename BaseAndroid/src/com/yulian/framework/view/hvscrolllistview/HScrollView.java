@@ -88,7 +88,7 @@ public class HScrollView extends HorizontalScrollView {
 
 		public void NotifyOnScrollChanged(int l, int t, int oldl, int oldt) {
 			
-			Log.i("NotifyOnScrollChanged", "mList size:"+mList.size());
+//			Log.i("NotifyOnScrollChanged", "mList size:"+mList.size());
 			if (mList == null || mList.size() == 0) {
 				return;
 			}

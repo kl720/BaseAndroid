@@ -1,14 +1,12 @@
 package com.yulian.framework.view.hvscrolllistview;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.yulian.baseandroid.R;
 import com.yulian.framework.Constant;
-import com.yulian.framework.utils.ViewUtil;
 import com.yulian.framework.view.hvscrolllistview.HScrollView.OnScrollChangedListener;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -36,7 +34,9 @@ public class DataAdapter extends BaseAdapter {
 	private boolean isShowSelect;
 	
 	
-	private List<Map<String, Object>> selectList=new ArrayList<Map<String,Object>>();
+	
+	private Map<Integer,Boolean> isCheckMap=new HashMap<Integer, Boolean>();//维护选择项
+	
 	
 	public DataAdapter(Context context,List<Map<String, Object>> list,String[] arr_key,RelativeLayout head,boolean isShowSelect) {
 		super();
@@ -45,6 +45,7 @@ public class DataAdapter extends BaseAdapter {
 		this.arr_key=arr_key;
 		this.head=head;
 		this.isShowSelect=isShowSelect;
+		initNoCheck(false);
 	}
 
 	@Override
@@ -63,10 +64,10 @@ public class DataAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View view, ViewGroup parentView) {
+	public View getView(final int position, View view, ViewGroup parentView) {
 		
 		final Map<String,Object> item=list.get(position);
-
+		
 		RelativeLayout convertView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.hvscrolllistview_item, null);
 			
 		if(position%2==1){	
@@ -80,16 +81,15 @@ public class DataAdapter extends BaseAdapter {
 			if(isShowSelect){
 				final CheckBox cb=(CheckBox) convertView.findViewById(R.id.cb_ischeck);
 				cb.setVisibility(View.VISIBLE);
-				
+				cb.setChecked(isCheckMap.get(position));
 				cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 					
 					@Override
 					public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-						if(arg1){
-							selectList.add(item);
-						}else{
-							selectList.remove(item);
-						}
+						
+						isCheckMap.put(position, arg1);
+						
+//						DataAdapter.this.notifyDataSetChanged();
 					}
 				});
 				
@@ -113,12 +113,37 @@ public class DataAdapter extends BaseAdapter {
 				tv.setText(item.get(key).toString());
 				ll_contnet_txt.addView(tv);
 			}
-
+			
+			if(position==0){
+				CheckBox t_cb=(CheckBox) head.findViewById(R.id.cb_ischeck);
+				t_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+					@Override
+					public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+						initNoCheck(arg1);
+						DataAdapter.this.notifyDataSetInvalidated();
+					}
+				});
+			}
+			
+			
 			HScrollView row_scroll = (HScrollView) convertView.findViewById(R.id.horizontalScrollView1);
 			HScrollView head_scroll = (HScrollView) head.findViewById(R.id.horizontalScrollView1);
 			head_scroll.AddOnScrollChangedListener(new OnScrollChangedListenerImp(row_scroll));
 		}
+		
 		return convertView;
+	}
+	/**
+	 * 默认所有项不选中
+	 * @param bool
+	 */
+	public void initNoCheck(boolean bool){
+		if(list==null){
+			return;
+		}
+		for(int i=0;i<list.size();i++){
+			isCheckMap.put(i, bool);
+		}
 	}
 	
 	/**
@@ -127,6 +152,13 @@ public class DataAdapter extends BaseAdapter {
 	 */
 	public List<Map<String, Object>> getSelectItems(){
 		
+		List<Map<String, Object>> selectList=new ArrayList<Map<String,Object>>();
+		
+		for(int i=0;i<list.size();i++){
+			if(isCheckMap.get(i)){
+				selectList.add(list.get(i));
+			}
+		}
 		return selectList;
 	}
 	
