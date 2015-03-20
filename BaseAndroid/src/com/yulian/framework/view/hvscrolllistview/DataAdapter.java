@@ -97,7 +97,8 @@ public class DataAdapter extends BaseAdapter {
 			}
 			TextView tv_f_column=new TextView(context);
 			tv_f_column.setLayoutParams(Constant.HVS_LPARAMS);
-			tv_f_column.setText(item.get(arr_key[0]).toString());
+			String arr_key_0=arr_key[0];
+			tv_f_column.setText(item.containsKey(arr_key[0])?(item.get(arr_key_0)==null||"null".equals(item.get(arr_key_0).toString())?"":item.get(arr_key_0).toString()):"");
 			tv_f_column.setTextSize(13);
 			tv_f_column.setGravity(Gravity.CENTER_VERTICAL);
 			ll_first_column.addView(tv_f_column);
@@ -106,11 +107,12 @@ public class DataAdapter extends BaseAdapter {
 			LinearLayout ll_contnet_txt=(LinearLayout) convertView.findViewById(R.id.ll_contnet);
 			for(int j=1;j<arr_key.length;j++){
 				String key=arr_key[j];
+				String value=item.containsKey(key)?(item.get(key)==null||"null".equals(item.get(key).toString())?"":item.get(key).toString()):"";
 				TextView tv=new TextView(context);
 				tv.setLayoutParams(Constant.HVS_LPARAMS);
 				tv.setTextSize(13);
 				tv.setGravity(Gravity.CENTER_VERTICAL);
-				tv.setText(item.get(key).toString());
+				tv.setText(value);
 				ll_contnet_txt.addView(tv);
 			}
 			
